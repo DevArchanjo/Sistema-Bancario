@@ -12,6 +12,7 @@ namespace SistemaBancario.Entities
         public int Senha { get; set; }
         public double Saldo { get; private set; } = 0;
         public bool ContaAtiva { get; set; } = true;
+        public List<Transferencia> transferencias { get; set; }
         public Cliente Cliente { get; set; }
 
         public Conta(int senha, Cliente cliente)
@@ -25,14 +26,14 @@ namespace SistemaBancario.Entities
         {
             Random random = new Random();
             int numeroGerado = random.Next(1000, 65000);
-            
+
             return numeroGerado;
         }
         public void Depositar(double valor)
         {
-            if (valor < 0 && !(valor is string))
-            {   
-                Console.WriteLine("valor inválido");
+            if (valor <= 0)
+            {
+                Console.WriteLine("Operação inválida");
             }
             else
             {
@@ -46,16 +47,24 @@ namespace SistemaBancario.Entities
             {
                 Console.WriteLine("Saldo insuficiente, não é possivel sacar o valor de {0} pois o saldo é de {1}", valor, Saldo);
             }
+            else
+            {
+                Saldo -= valor;
+            }
         }
 
-        public void Transferir(Conta origem, Conta destino, double valor)
+        public void TransferirValor(double valor)
         {
-            //Chama a classe Transferencia e passa os valores do parâmetro para a classe
+            Saldo -= valor;
+        }
+        public double ConsultarSaldo()
+        {
+            return Saldo;
         }
 
         public override string ToString()
         {
-            return "Titular da conta: " + Cliente.Nome 
+            return "Titular da conta: " + Cliente.Nome
                 + " Numero da conta: " + Numero;
         }
     }
