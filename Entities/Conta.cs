@@ -8,12 +8,12 @@ namespace SistemaBancario.Entities
 {
     internal class Conta
     {
-        public int Numero { get; set; }
-        public int Senha { get; set; }
-        public double Saldo { get; private set; } = 0;
-        public bool ContaAtiva { get; set; } = true;
-        public List<Transferencia> transferencias { get; set; }
-        public Cliente Cliente { get; set; }
+        internal int Numero { get; set; }
+        internal int Senha { get; set; }
+        internal double Saldo { get; set; } = 0;
+        internal bool ContaAtiva { get; set; } = true;
+        internal List<Transferencia> transferencias { get; set; }
+        internal Cliente Cliente { get; set; }
 
         public Conta(int senha, Cliente cliente)
         {
@@ -25,11 +25,11 @@ namespace SistemaBancario.Entities
         public int GerarNumeroDaConta()
         {
             Random random = new Random();
-            int numeroGerado = random.Next(1000, 65000);
+            int numeroGerado = random.Next(10000, 65000);
 
             return numeroGerado;
         }
-        public void Depositar(double valor)
+        public virtual void Depositar(double valor)
         {
             if (valor <= 0)
             {
@@ -38,24 +38,27 @@ namespace SistemaBancario.Entities
             else
             {
                 Saldo += valor;
+                Console.WriteLine("Depósito realizado no valor de {0}", valor);
             }
         }
 
-        public void Sacar(double valor)
+        public virtual void Sacar(double valor)
         {
-            if (valor > Saldo)
+            if (Saldo > valor)
             {
-                Console.WriteLine("Saldo insuficiente, não é possivel sacar o valor de {0} pois o saldo é de {1}", valor, Saldo);
+                Saldo -= valor;
+                Console.WriteLine("Saque realizado no valor de {0}, Saldo atual: {1}", valor, Saldo);
             }
             else
             {
-                Saldo -= valor;
+                Console.WriteLine("Saldo insuficiente, não é possivel sacar o valor de {0} pois o saldo da conta é de {1}", valor, Saldo);
             }
         }
 
         public void TransferirValor(double valor)
         {
             Saldo -= valor;
+            Console.WriteLine("Valor transferido: {0} Saldo atual: {1}", valor, Saldo);
         }
         public double ConsultarSaldo()
         {
