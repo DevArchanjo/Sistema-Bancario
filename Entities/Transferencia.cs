@@ -21,14 +21,22 @@ namespace SistemaBancario.Entities
 
         public void Transferir()
         {
-            if (ContaOrigem.Saldo < ValorTransferencia)
+            //verificar se a conta existe usando o bloco Try Cath 
+            try
             {
-                Console.WriteLine("Saldo insuficiente para transferência");
+                if (ContaOrigem.Saldo < ValorTransferencia)//só transfere se o saldo for positivo
+                {
+                    Console.WriteLine("Saldo insuficiente para transferência");
+                }
+                else
+                {
+                    ContaOrigem.TransferirValor(ValorTransferencia);
+                    ContaDestino.Depositar(ValorTransferencia);
+                }
             }
-            else
+            catch (NullReferenceException nrf)
             {
-                ContaOrigem.TransferirValor(ValorTransferencia);
-                ContaDestino.Depositar(ValorTransferencia);
+                Console.WriteLine("Conta não encontrada " + nrf);
             }
         }
 
