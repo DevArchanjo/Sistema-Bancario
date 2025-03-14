@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using SistemaBancario.Entities.Exceptions;
+using SistemaBancario.Entities.Enums;
+using System.Globalization;
+
 namespace SistemaBancario.Entities
 {
     internal class Conta
@@ -11,7 +15,7 @@ namespace SistemaBancario.Entities
         internal int Numero { get; set; }
         internal int Senha { get; set; }
         internal double Saldo { get; set; } = 0;
-        internal bool ContaAtiva { get; set; } = true;
+        internal StatusConta StatusConta { get; set; } = (StatusConta)1;
         internal List<Transferencia> transferencias { get; set; }
         internal Cliente Cliente { get; set; }
 
@@ -33,7 +37,7 @@ namespace SistemaBancario.Entities
         {
             if (valor <= 0)
             {
-                Console.WriteLine("Operação inválida");
+                throw new DomainException("O valor para depósito é inválido");
             }
             else
             {
@@ -51,14 +55,16 @@ namespace SistemaBancario.Entities
             }
             else
             {
-                Console.WriteLine("Saldo insuficiente, não é possivel sacar o valor de {0} pois o saldo da conta é de {1}", valor, Saldo);
+                throw new DomainException("Saldo insuficiente");
             }
         }
 
-        public void TransferirValor(double valor)
+        public virtual void TransferirValor(double valor)
         {
+
             Saldo -= valor;
             Console.WriteLine("Valor transferido: {0} Saldo atual: {1}", valor, Saldo);
+
         }
         public double ConsultarSaldo()
         {
@@ -67,8 +73,9 @@ namespace SistemaBancario.Entities
 
         public override string ToString()
         {
-            return "Titular da conta: " + Cliente.Nome
-                + " Numero da conta: " + Numero;
+            return " Numero da conta: " + Numero +
+            " Titular da conta: " + Cliente.Nome; 
+                
         }
     }
 }
