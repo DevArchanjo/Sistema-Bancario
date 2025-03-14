@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
+using SistemaBancario.Entities.Enums;
 
 namespace SistemaBancario.Entities
 {
@@ -25,10 +26,12 @@ namespace SistemaBancario.Entities
             Clientes.Add(cliente);
         }
 
-        public void AbrirConta(Conta conta)
+        internal void AbrirConta(Conta conta)
         {
             Contas.Add(conta);
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Conta criada com sucesso! \nNumero da conta: {0} Senha: {1} \nGuarde esses dados, eles não serão exibidos novamente", conta.Numero, conta.Senha);
+            Console.ResetColor();
         }
 
         public Conta AcessarConta(int numero, int senha)
@@ -60,6 +63,22 @@ namespace SistemaBancario.Entities
             }
 
             return conta;
+        }
+
+        public void DefinirStatusConta(int numero, int novoStatus)
+        {
+            var filtro = (from c in Contas
+                          where c.Numero == numero
+                          select c.StatusConta = (StatusConta)novoStatus);
+
+            foreach (Conta c in Contas)
+            {
+                foreach (var f in filtro)
+                {
+                    c.StatusConta = f;
+                    Console.WriteLine("Conta: {0}" + f);
+                }
+            }
         }
     }
 }
