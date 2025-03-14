@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
 
+using SistemaBancario.Entities.Exceptions;
+
 namespace SistemaBancario.Entities
 {
     internal class ContaCorrente : Conta
@@ -27,14 +29,29 @@ namespace SistemaBancario.Entities
                 }
                 else
                 {
-                    Console.WriteLine("Não é possivel realizar o saque, o valor informado excede o limite de saldo da conta");
+                    throw new DomainException("Operação inválida o valor informado é maior do que o saldo da conta");
                 }
             }
         }
 
-        public override void Depositar(double valor)
+        public override void TransferirValor(double valor)
         {
-            Saldo += valor;
+            if (Saldo >= valor)
+            {
+                Saldo -= valor;
+            }
+            else
+            {
+                if (Saldo + LimiteChequeEspecial >= valor)
+                {
+                    Saldo = Saldo - valor;
+                    SaldoCheque = LimiteChequeEspecial + Saldo;
+                }
+                else
+                {
+                    throw new DomainException("Operação inválida o valor informado é maior do que o saldo da conta");
+                }
+            }
         }
     }
 }
