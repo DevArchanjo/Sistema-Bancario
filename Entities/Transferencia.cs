@@ -11,27 +11,31 @@ namespace SistemaBancario.Entities
         public Conta ContaOrigem { get; set; }
         public Conta ContaDestino { get; set; }
         public double ValorTransferencia { get; set; }
+        public DateTime Data { get; set; }
         
         public Transferencia(Conta origem, Conta destino, double valor)
         {
             ContaOrigem = origem;
             ContaDestino = destino;
             ValorTransferencia = valor;
+            Data = DateTime.Now;
         }
 
         public void Transferir()
         {
-            //verificar se a conta existe usando o bloco Try Cath 
             try
             {
-                if (ContaOrigem.Saldo < ValorTransferencia)//só transfere se o saldo for positivo
+                if (ContaOrigem != null && ContaDestino != null)//verifica se a conta existe
                 {
-                    Console.WriteLine("Saldo insuficiente para transferência");
-                }
-                else
-                {
-                    ContaOrigem.TransferirValor(ValorTransferencia);
-                    ContaDestino.Depositar(ValorTransferencia);
+                    if (ContaOrigem.Saldo > ValorTransferencia)//verifica se o valor do saldo é suficiente
+                    {
+                        ContaOrigem.TransferirValor(ValorTransferencia);
+                        ContaDestino.Depositar(ValorTransferencia);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Saldo da conta é insuficiente, para realizar a transferencia");
+                    }
                 }
             }
             catch (NullReferenceException nrf)
@@ -42,7 +46,16 @@ namespace SistemaBancario.Entities
 
         public override string ToString()
         {
-            return ContaOrigem + " " + ContaDestino + " " + ValorTransferencia;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Comprovante de transferência");
+            sb.AppendLine("Transferido para: " + ContaDestino.Cliente.Nome);
+            sb.AppendLine("Valor da transferido: " + ValorTransferencia);
+            sb.AppendLine("Data e hora da transferencia: " + Data.ToString("dd/MM/yyyy HH:mm:ss"));
+            sb.AppendLine("-------------------------------------------------");
+            sb.AppendLine("Origem");
+            sb.AppendLine("Nome: " + ContaOrigem.Cliente.Nome);
+
+            return sb.ToString();
         }
     }
 }

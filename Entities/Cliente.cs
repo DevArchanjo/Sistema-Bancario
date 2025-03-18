@@ -8,25 +8,26 @@ namespace SistemaBancario.Entities
 {
     internal class Cliente
     {
+        public Banco banco;
         public int Id { get; set; }
         public string Nome { get; set; }
         public string CPF { get; set; }
         public string Endereco { get; set; }    
 
-        public Cliente(int id, string nome, string cpf, string endereco) 
+        public Cliente(string nome, string cpf, string endereco) 
         {
-            Id = id;
+            Id = IncrementarId();
             Nome = nome;
             CPF = cpf;
             Endereco = endereco;
         }
 
-        public override string ToString()
+        public int IncrementarId()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(Nome + " CPF: " + " Endereço: " + Endereco);
+            int proxId = 0;
+            proxId++;
 
-            return sb.ToString();
+            return proxId;
         }
     }
 }

@@ -18,6 +18,7 @@ namespace SistemaBancario.Entities
             if (Saldo >= valor)
             {
                 Saldo -= valor;
+                Console.WriteLine("Saque realizado no valor de: {0} Saldo atual: {1}", valor, Saldo);
             }
             else
             {

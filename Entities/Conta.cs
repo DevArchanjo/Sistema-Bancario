@@ -35,14 +35,14 @@ namespace SistemaBancario.Entities
         }
         public virtual void Depositar(double valor)
         {
-            if (valor <= 0)
-            {
-                throw new DomainException("O valor para depósito é inválido");
-            }
-            else
+            if (valor > 0)
             {
                 Saldo += valor;
                 Console.WriteLine("Depósito realizado no valor de {0}", valor);
+            }
+            else
+            {
+                throw new DomainException("O valor para depósito é inválido");
             }
         }
 
@@ -61,14 +61,18 @@ namespace SistemaBancario.Entities
 
         public virtual void TransferirValor(double valor)
         {
-
-            Saldo -= valor;
-            Console.WriteLine("Valor transferido: {0} Saldo atual: {1}", valor, Saldo);
-
+            if (valor < Saldo)
+            {
+                Saldo -= valor;
+            }
+            else
+            {
+                Console.WriteLine("Não é possivel realizar a transferência, valor da transferência é maior que o saldo atual");
+            }
         }
-        public double ConsultarSaldo()
+        public void ConsultarSaldo()
         {
-            return Saldo;
+            Console.WriteLine("Saldo atual da conta: " + Saldo);
         }
 
         public override string ToString()
