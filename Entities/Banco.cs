@@ -14,6 +14,7 @@ namespace SistemaBancario.Entities
         public string Nome { get; set; }
         public List<Cliente> Clientes { get; set; } = new List<Cliente>();
         public List<Conta> Contas { get; set; } = new List<Conta>();
+        public List<Gerente> Gerentes { get; set; } = new List<Gerente>();
 
         public Banco(int numero, string nome)
         {
@@ -29,8 +30,10 @@ namespace SistemaBancario.Entities
         internal void AbrirConta(Conta conta)
         {
             Contas.Add(conta);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("Conta criada com sucesso! \nNumero da conta: {0} Senha: {1} \nGuarde esses dados, eles não serão exibidos novamente", conta.Numero, conta.Senha);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Conta criada com sucesso! " +
+                "\n\nNumero da conta: {0} Senha: {1} " +
+                "\nGuarde esses dados, eles não serão exibidos novamente\n", conta.Numero, conta.Senha);
             Console.ResetColor();
         }
 
