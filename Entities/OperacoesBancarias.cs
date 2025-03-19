@@ -104,11 +104,11 @@ namespace SistemaBancario.Entities
             {
                 if (conta is ContaCorrente)
                 {
-                    Console.WriteLine("Operações: \n1 -> Depositar \n2 -> Sacar \n3 -> Transferir \n4 -> Consultar Saldo \n0 -> Sair\n");
+                    Console.WriteLine("Operações: \n1 -> Depositar \n2 -> Sacar \n3 -> Transferir \n4 -> Consultar Saldo \n6 -> Sair\n");
                 }
                 else if (conta is ContaPoupanca)
                 {
-                    Console.WriteLine("Operações: \n1 -> Depositar \n2 -> Sacar \n3 -> Transferir \n4 -> Consultar Saldo \n5 -> Cusultar rendimento \n0 -> Sair\n");
+                    Console.WriteLine("Operações: \n1 -> Depositar \n2 -> Sacar \n3 -> Transferir \n4 -> Consultar Saldo \n5 -> Cusultar rendimento \n6 -> Sair\n");
                 }
             }
             else
@@ -155,7 +155,7 @@ namespace SistemaBancario.Entities
             }
             Console.Clear();
 
-            while (operacao != 0)
+            while (operacao != 6)
             {
                 try
                 {
@@ -220,7 +220,6 @@ namespace SistemaBancario.Entities
                             {
                                 Transferencia transfe = new Transferencia(conta, contaDestino, valor);
                                 transfe.Transferir();
-                                Console.WriteLine(transfe);
                             }
                             else
                             {
@@ -247,15 +246,13 @@ namespace SistemaBancario.Entities
                             }
 
                             break;
+                        case 6:
+                            Console.WriteLine("\nA {0} agradece por sua preferência!\n",Banco.Nome);
+
+                            break;
                         default:
-                            if (operacao == 0)
-                            {
-                                Console.WriteLine("A {0} agradece pela sua preferência!", Banco.Nome);
-                            }
-                            else
-                            {
-                                Console.WriteLine("Operação de conta é inválida");
-                            }
+
+                            Console.WriteLine("Operação de conta é inválida");
 
                             break;
                     }
@@ -266,7 +263,7 @@ namespace SistemaBancario.Entities
                 }
                 catch (NullReferenceException nf)
                 {
-                    Console.WriteLine("Erro ao tentar encontrar conta");
+                    Console.WriteLine("A conta informada não foi encontrada");
                 }
             }
             return 0;
