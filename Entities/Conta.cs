@@ -33,12 +33,24 @@ namespace SistemaBancario.Entities
 
             return numeroGerado;
         }
-        public virtual void Depositar(double valor)
+        public void Depositar(double valor)
         {
             if (valor > 0)
             {
                 Saldo += valor;
                 Console.WriteLine("Depósito realizado no valor de {0}", valor);
+            }
+            else
+            {
+                throw new DomainException("O valor para depósito é inválido");
+            }
+        }
+
+        public void DepositoDeValorTransferido(double valor)
+        {
+            if (valor > 0)
+            {
+                Saldo += valor;
             }
             else
             {
