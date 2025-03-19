@@ -25,12 +25,14 @@ namespace SistemaBancario.Entities
         {
             try
             {
-                if (ContaOrigem != null && ContaDestino != null)//verifica se a conta existe
+                if (ContaOrigem != null && ContaDestino != null)//verifica se as contas existem
                 {
                     if (ContaOrigem.Saldo > ValorTransferencia)//verifica se o valor do saldo é suficiente
                     {
                         ContaOrigem.TransferirValor(ValorTransferencia);
-                        ContaDestino.Depositar(ValorTransferencia);
+                        ContaDestino.DepositoDeValorTransferido(ValorTransferencia);
+
+                        Console.WriteLine(ToString());
                     }
                     else
                     {
@@ -49,7 +51,7 @@ namespace SistemaBancario.Entities
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Comprovante de transferência");
             sb.AppendLine("Transferido para: " + ContaDestino.Cliente.Nome);
-            sb.AppendLine("Valor da transferido: " + ValorTransferencia);
+            sb.AppendLine("Valor transferido: " + ValorTransferencia);
             sb.AppendLine("Data e hora da transferencia: " + Data.ToString("dd/MM/yyyy HH:mm:ss"));
             sb.AppendLine("-------------------------------------------------");
             sb.AppendLine("Origem");
